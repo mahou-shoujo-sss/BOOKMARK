@@ -24,8 +24,8 @@ func (r *ListPostgres) Create(userId int, list bookmark.List) (int, error) {
 	}
 
 	var id int
-	createListQuery := fmt.Sprintf("INSERT INTO %s (title, description) VALUES ($1, $2, $3) RETURNING id", listsTable)
-	row := tx.QueryRow(createListQuery, list.Title, list.Description, list.Link)
+	createListQuery := fmt.Sprintf("INSERT INTO %s (title, description) VALUES ($1, $2) RETURNING id", listsTable)
+	row := tx.QueryRow(createListQuery, list.Title, list.Description)
 	if err := row.Scan(&id); err != nil {
 		tx.Rollback()
 		return 0, err
